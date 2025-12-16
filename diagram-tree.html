@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Pakar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Navbar ===== -->
+<header class="navbar">
+    <div class="logo">
+        <span class="logo-box"></span>
+        <h2>Sistem Pakar<br><span>Diagnosa Kerusakan Komputer</span></h2>
+    </div>
+
+    <nav>
+          <a href="index.html"class="active">Home</a>
+        <a href="diagnosa.html" class="active">Dignosa</a>
+        <a href="about.html" class="active">About</a>
+        <a href="diagram-tree.html"class="active">Diagram Tree</a>
+        <a href="#">Implikasi</a>
+        
+    </nav>
+
+    <div class="social">
+        <a href="#">f</a>
+        <a href="#">x</a>
+        <a href="#">ig</a>
+    </div>
+
+   
+</header>
+<!-- ===== PARTNERS ===== -->
+<section class="partners">
+    <h2>DIAGRAM TREE</h2>
+
+   
+
+</div>
+
+</section>
+
+<!-- ===== DIAGRAM TREE ===== -->
+<img src="assets/dtree.png" usemap="#image-map" id="diagram">
+
+<div id="tooltip"></div>
+
+<map name="image-map">
+  <area 
+    shape="circle"
+    coords="586,51,28"
+    onmouseover="showTip('G01 - Bau mulut')"
+    onmouseout="hideTip()">
+  <area 
+    shape="circle"
+    coords="922,157,28"
+    onmouseover="showTip('G02 - Gusi bengkak, Merah, dan Berdarah')"
+    onmouseout="hideTip()">
+  <area 
+   shape="circle"
+    coords="1041,239,27"
+    onmouseover="showTip('G03 - Gingival berkaratin, gaung luka diantara gigi dan gusi')"
+   onmouseout="hideTip()">
+   <area 
+    shape="circle"
+    coords="936,336,27"
+    onmouseover="showTip('G04 - Pembesaran limfoid di kepala, leher, atau rahang')"
+    onmouseout="hideTip()">
+  <area 
+    shape="circle"
+    coords="1151,317,26"
+    onmouseover="showTip('G05 - Demam')"
+    onmouseout="hideTip()">
+<area 
+    shape="circle"
+    coords="832,259,29"
+    onmouseover="showTip('G06 - Nyeri Gusi')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="348,104,27"
+    onmouseover="showTip('G07 - Sakit Gigi')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="1087,414,28"
+    onmouseover="showTip('G08 - Nyeri ringan hingga tajam saat mengonsumsi makanan manis,')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="414,296,26"
+    onmouseover="showTip('G09 - Noda berwarna cokelat, hitam atau putih pada permukaan gigi')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="322,206,29"
+    onmouseover="showTip('G10 - Nyeri saat menggigit makanan')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="264,305,29"
+    onmouseover="showTip('G11 - Gusi berdarah dan kemerahan')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="704,122,27"
+    onmouseover="showTip('G12 - Gusi membengkak')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="651,200,29"
+    onmouseover="showTip('G13 - Gusi melorot atau gigi tampak menjadi panjang')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="573,284,26"
+    onmouseover="showTip('G14 - Gigi goyang dan sensitive')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="183,149,27"
+    onmouseover="showTip('G15 - Gigi menjadi meregang (timbul celah-celah diantara gigi)')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="864,442,28"
+    onmouseover="showTip('P01 - Gingivitis (Radang gusi)')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="359,399,26"
+    onmouseover="showTip('P02 - Karies Gigi (gigi berlubang)')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="524,378,27"
+    onmouseover="showTip('P03 - Karang Gigi')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="174,403,27"
+    onmouseover="showTip('P04 - Stomatitis')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="756,385,30"
+    onmouseover="showTip('P05 - Abses Periodental')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="85,197,27"
+    onmouseover="showTip('P06 - Candidas Oral')"
+    onmouseout="hideTip()">
+    <area 
+    shape="circle"
+    coords="1024,516,29"
+    onmouseover="showTip('P07 - Trench Mouth')"
+    onmouseout="hideTip()">
+    
+    
+</map>
+
+<!-- ===== JAVASCRIPT (TARUH DI SINI) ===== -->
+<script>
+const tooltip = document.getElementById("tooltip");
+
+function showTip(text) {
+  tooltip.innerText = text;
+  tooltip.style.display = "block";
+}
+
+document.addEventListener("mousemove", function(e) {
+  tooltip.style.left = e.pageX + 15 + "px";
+  tooltip.style.top = e.pageY + 15 + "px";
+});
+
+function hideTip() {
+  tooltip.style.display = "none";
+}
+</script>
+
+</body>
+</html>

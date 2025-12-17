@@ -2,96 +2,420 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Hasil Diagnosa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>Hasil Diagnosa: Stomatitis | Sistem Pakar</title>
+    
+    <!-- Mengambil Font Modern dari Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Mengambil Icon library (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. VARIABEL CSS --- */
+        :root {
+            --primary-color: #4F46E5; /* Indigo Modern */
+            --secondary-color: #1E1B4B; /* Dark Text */
+            --warning-color: #F59E0B; /* Amber/Orange untuk Penyakit */
+            --danger-color: #EF4444; 
+            --success-color: #10B981;
+            --bg-color: #F8FAFC; 
+            --card-bg: #FFFFFF; 
+            --text-gray: #64748B;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- 2. RESET DASAR --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--secondary-color);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: var(--secondary-color); }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- 3. HEADER / NAVBAR --- */
+        header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--text-gray); }
+        .nav-links a:hover { color: var(--primary-color); }
+        .nav-links a.active { color: var(--primary-color); font-weight: 700; }
+
+        /* --- 4. LAYOUT UTAMA --- */
+        .diagnosa-section {
+            padding: 60px 0;
+            min-height: 85vh;
+        }
+
+        .diagnosa-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr; /* Kolom kanan lebih lebar untuk hasil detail */
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Sidebar Kiri */
+        .sidebar {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .diagnosa-image img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            object-fit: cover;
+        }
+
+        .info-list { text-align: left; list-style: none; padding: 0; }
+        .info-list li { 
+            margin-bottom: 10px; 
+            font-size: 0.9rem; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .info-list li i { color: var(--success-color); }
+
+        /* --- 5. RESULT CARD (Penyakit) --- */
+        .result-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-top: 5px solid var(--danger-color); /* Merah/Oranye untuk indikasi penyakit */
+            position: relative;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .disease-icon {
+            font-size: 4rem;
+            color: var(--danger-color);
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .rule-badge {
+            background: #FEF2F2;
+            color: var(--danger-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            display: inline-block;
+            border: 1px solid #FECACA;
+        }
+
+        /* Detail Gejala & Rekomendasi */
+        .detail-box {
+            background: #F8FAFC;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .detail-box h4 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .symptom-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            background: white;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            color: var(--text-gray);
+            border: 1px solid #E2E8F0;
+        }
+
+        .recommendation-alert {
+            background-color: #FFF7ED;
+            border: 1px solid #FFEDD5;
+            color: #9A3412;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        /* --- 6. FEATURES GRID (Updated Text) --- */
+        .features-section { padding: 50px 0; }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            border: 1px solid transparent;
+            height: 100%;
+        }
+
+        .feature-box:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-box span {
+            display: inline-block;
+            background: #EEF2FF;
+            color: var(--primary-color);
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .feature-box h4 { font-size: 1rem; margin-bottom: 10px; }
+        .feature-box p { font-size: 0.85rem; color: var(--text-gray); }
+
+        /* --- 7. FOOTER & RESPONSIVE --- */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .diagnosa-layout { grid-template-columns: 1fr; }
+        }
+        
+        .fade-in {
+            opacity: 0; transform: translateY(20px); transition: 0.6s;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
 </head>
 <body>
 
-<header class="navbar">
-    <div class="logo">
-        <span class="logo-box"></span>
-        <h2>Sistem Pakar<br><span>Metode untuk mengembangkan sistem prediksi penyakit gigi dan mulut</span></h2>
-    </div>
-    <nav>
-          <a href="index.html"class="active">Home</a>
-        <a href="diagnosa.html" class="active">Dignosa</a>
-        <a href="about.html" class="active">About</a>
-        <a href="diagram-tree.html"class="active">Diagram Tree</a>
-        <a href="#">Implikasi</a>
-    </nav>
-</header>
+    <!-- NAVBAR -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fa-solid fa-tooth"></i>
+                    <span>SistemPakar.</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="diagnosa.html" class="active">Diagnosa</a>
+                    <a href="diagram-tree.html">Diagram Tree</a>
+                    <a href="about.html">About</a>
+                    <a href="#">Implikasi</a>
+                </div>
+            </nav>
+        </div>
+    </header>
 
-<!-- ===== DIAGNOSA SECTION ===== -->
-<section class="diagnosa-layout">
+    <!-- MAIN CONTENT -->
+    <main class="container diagnosa-section">
+        
+        <div class="diagnosa-layout">
+            
+            <!-- KOLOM KIRI: INFO SISTEM -->
+            <aside class="sidebar fade-in">
+                <div class="diagnosa-image">
+                    <img src="assets/pngwing.com (2).png" 
+                         alt="Diagnosa Image">
+                </div>
+                
+                <div class="diagnosa-info">
+                    <h3>Diagnosa Sistem</h3>
+                    <p>
+                        Sistem diagnosa ini dirancang untuk membantu pengguna dalam mengidentifikasi kondisi awal berdasarkan gejala yang dipilih melalui pendekatan berbasis aturan dan data.
+                    </p>
+                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+                    <ul class="info-list">
+                        <li><i class="fa-solid fa-check-circle"></i> Proses cepat</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Logika pakar</li>
+                        <li><i class="fa-solid fa-check-circle"></i> Keputusan akurat</li>
+                    </ul>
+                </div>
+            </aside>
 
-    <div class="diagnosa-image">
-         <img src="https://tse4.mm.bing.net/th/id/OIP.erFu6pIVMiQQbLKpRTJnIQHaHx?cb=ucfimg2&ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Diagnosa Image">>
-    </div>
+            <!-- KOLOM KANAN: HASIL DIAGNOSA -->
+            <section class="result-card fade-in">
+                
+                <div class="result-header">
+                    <div class="disease-icon">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h2 class="result-title">Anda Terindikasi Penyakit Stomatitis</h2>
+                    <div class="rule-badge">
+                        Rule 1 : G01 > G07 > G10 > G11 > P04
+                    </div>
+                </div>
 
- <!-- ===== PERTANYAAN DIAGNOSA ===== -->
-<section class="diagnosa-question">
-    <h2>Anda mengalami penyakit Stomatitis</h2><br>
-<h3>Rule 1 : G01 > G07 > G10 > G11 > P04</h3>
+                <div class="detail-box">
+                    <h4><i class="fa-solid fa-clipboard-list"></i> Gejala Terdeteksi:</h4>
+                    <div class="symptom-tags">
+                        <span class="tag">Bau Mulut (Halitosis)</span>
+                        <span class="tag">Sakit Gigi</span>
+                        <span class="tag">Nyeri saat makan</span>
+                        <span class="tag">Gusi Berdarah & Kemerahan</span>
+                    </div>
 
+                    <h4><i class="fa-solid fa-user-doctor"></i> Rekomendasi Sistem:</h4>
+                    <div class="recommendation-alert">
+                        <i class="fa-solid fa-kit-medical" style="font-size: 1.5rem; margin-top: 3px;"></i>
+                        <div>
+                            <strong>Tindakan yang disarankan:</strong>
+                            <p>Segera kunjungi Dokter Gigi terdekat untuk pemeriksaan lebih lanjut, atau pergi ke Rumah Sakit bila gejala memburuk atau disertai demam tinggi.</p>
+                        </div>
+                    </div>
+                </div>
 
-</section>
+                <div style="text-align: center; margin-top: 30px;">
+                    <a href="diagnosa.html" style="background: var(--primary-color); color: white; padding: 12px 30px; border-radius: 8px; font-weight: 600;">
+                        <i class="fa-solid fa-rotate-left"></i> Diagnosa Ulang
+                    </a>
+                </div>
 
+            </section>
 
-    <div class="diagnosa-info">
-        <h1>Diagnosa Sistem</h1>
-        <p>
-            Sistem diagnosa ini dirancang untuk membantu pengguna
-            dalam mengidentifikasi kondisi awal berdasarkan gejala
-            yang dipilih melalui pendekatan berbasis aturan dan data.
-        </p>
+        </div>
 
-       
+        <!-- FITUR SECTION (Konten sesuai input Anda) -->
+        <section class="features-section fade-in">
+            <h4 style="text-align: center; margin-bottom: 20px; color: var(--text-gray);">Rangkuman Proses Diagnosa</h4>
+            <div class="features-grid">
+                <div class="feature-box">
+                    <span><i class="fa-solid fa-hand-holding-medical"></i></span>
+                    <h4>Input Gejala</h4>
+                    <p>Bau mulut, Sakit Gigi, Nyeri saat makan, Gusi berdarah dan Kemerahan.</p>
+                </div>
+                <div class="feature-box">
+                    <span><i class="fa-solid fa-gears"></i></span>
+                    <h4>Proses Diagnosa</h4>
+                    <p>Sistem memproses data berdasarkan aturan (Rule Base).</p>
+                </div>
+                <div class="feature-box">
+                    <span><i class="fa-solid fa-file-medical-alt"></i></span>
+                    <h4>Hasil Analisis</h4>
+                    <p style="font-weight: bold; color: var(--danger-color);">Stomatitis</p>
+                </div>
+                <div class="feature-box">
+                    <span><i class="fa-solid fa-user-md"></i></span>
+                    <h4>Rekomendasi</h4>
+                    <p>Kunjungi Dokter Gigi, atau Pergi ke Rumah Sakit bila diperlukan.</p>
+                </div>
+                <div class="feature-box">
+                    <span><i class="fa-solid fa-database"></i></span>
+                    <h4>Data Tersimpan</h4>
+                    <p>Riwayat diagnosa ini telah disimpan dalam sistem.</p>
+                </div>
+                <div class="feature-box">
+                    <span><i class="fa-solid fa-brain"></i></span>
+                    <h4>Berbasis AI</h4>
+                    <p>Dapat dikembangkan dengan AI / Fuzzy Logic.</p>
+                </div>
+            </div>
+        </section>
 
+    </main>
 
-        <ul class="diagnosa-list">
-            <li>Proses diagnosa cepat dan sistematis</li>
-            <li>Berbasis aturan dan logika sistem pakar</li>
-            <li>Mendukung pengambilan keputusan awal</li>
-            <li>Antarmuka sederhana dan mudah digunakan</li>
-        </ul>
-    </div>
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> Kelompok Creative. Sistem Pakar Diagnosa Penyakit Mulut.</p>
+        </div>
+    </footer>
 
-</section>
+    <!-- JAVASCRIPT ANIMASI -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-<!-- ===== FITUR ===== -->
-<section class="diagnosa-features">
-    <div class="feature-box">
-        <span>✔</span>
-        <h4>Input Gejala</h4>
-        <p>Bau mulut,Sakit Gigi,Nyeri saat makan,Gusi berddarah dan Kemerahan</p>
-    </div>
-    <div class="feature-box">
-        <span>✔</span>
-        <h4>Proses Diagnosa</h4>
-        <p>Sistem memproses data berdasarkan aturan.</p>
-    </div>
-    <div class="feature-box">
-        <span>✔</span>
-        <h4>Hasil Analisis</h4>
-        <p>Stomatitis</p>
-    </div>
-    <div class="feature-box">
-        <span>✔</span>
-        <h4>Rekomendasi</h4>
-        <p>Kunjungi Dokter Gigi,atau Pergi ke Rumah Sakit bila diperlukan</p>
-    </div>
-    <div class="feature-box">
-        <span>✔</span>
-        <h4>Data Tersimpan</h4>
-        <p>Riwayat diagnosa dapat disimpan.</p>
-    </div>
-    <div class="feature-box">
-        <span>✔</span>
-        <h4>Berbasis AI</h4>
-        <p>Dapat dikembangkan dengan AI / Fuzzy.</p>
-    </div>
-</section>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
 
 </body>
 </html>

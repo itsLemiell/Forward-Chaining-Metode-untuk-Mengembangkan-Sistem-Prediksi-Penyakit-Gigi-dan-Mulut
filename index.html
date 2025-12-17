@@ -2,76 +2,416 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Sistem Pakar Diagnosa Penyakit Mulut</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>Beranda | Sistem Pakar Penyakit Mulut</title>
+    
+    <!-- Mengambil Font Modern dari Google Fonts (Poppins & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Mengambil Icon library (FontAwesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. VARIABEL CSS (Sama dengan halaman About) --- */
+        :root {
+            --primary-color: #4F46E5; /* Indigo Modern */
+            --secondary-color: #1E1B4B; /* Dark Text */
+            --accent-color: #818CF8; 
+            --bg-color: #F8FAFC; 
+            --card-bg: #FFFFFF; 
+            --text-gray: #64748B;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- 2. RESET DASAR --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--secondary-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; color: var(--secondary-color); }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- 3. HEADER / NAVBAR (Updated Menu dengan Highlight) --- */
+        header {
+            background-color: var(--card-bg);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links { display: flex; gap: 25px; }
+
+        /* Menu normal (abu-abu) */
+        .nav-links a { 
+            font-weight: 500; 
+            font-size: 0.95rem; 
+            color: #9CA3AF; /* Abu-abu untuk menu tidak aktif */
+            position: relative;
+            padding: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effect */
+        .nav-links a:hover { 
+            color: var(--primary-color); 
+        }
+
+        /* Menu yang aktif (highlight berwarna) */
+        .nav-links a.active { 
+            color: var(--primary-color); 
+            font-weight: 700; 
+        }
+
+        /* Garis bawah untuk menu aktif */
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* --- 4. HERO SECTION (Split Layout) --- */
+        .hero-section {
+            padding: 80px 0;
+            display: flex;
+            align-items: center;
+            min-height: 80vh; /* Agar tampilan penuh di layar laptop */
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        
+        .hero-text h1 span {
+            color: var(--primary-color);
+        }
+
+        .hero-text p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            transform: rotate(2deg); /* Sedikit miring agar artistik */
+            transition: 0.5s;
+        }
+
+        .hero-image img:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        /* Tombol Utama */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 14px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn:hover {
+            background-color: #4338ca;
+            transform: translateY(-2px);
+        }
+
+        /* --- 5. FEATURES / INFO SECTION --- */
+        .features {
+            padding: 60px 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        /* --- 6. COOKIE BANNER --- */
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 2000;
+            width: 90%;
+            max-width: 600px;
+            font-size: 0.9rem;
+            opacity: 0; /* Mulai tersembunyi untuk animasi */
+            animation: slideUp 0.5s forwards 1s; /* Muncul setelah 1 detik */
+        }
+
+        .cookie-banner a { text-decoration: underline; }
+        
+        .cookie-btn {
+            background: white;
+            color: var(--secondary-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        /* --- 7. FOOTER --- */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            margin: 0 5px;
+            font-size: 1.2rem;
+        }
+
+        .social-icons a:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        /* Animasi */
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100px); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .fade-in {
+            opacity: 0; transform: translateY(20px); transition: 0.6s;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* Responsive HP */
+        @media (max-width: 768px) {
+            .hero-content { grid-template-columns: 1fr; text-align: center; }
+            .nav-links { display: none; } /* Simpel: sembunyikan menu di HP */
+            .hero-text h1 { font-size: 2.2rem; }
+            .hero-image { order: -1; } /* Gambar pindah ke atas di HP */
+            .cookie-banner { flex-direction: column; border-radius: 15px; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- ===== Navbar ===== -->
-<header class="navbar">
-    <div class="logo">
-        <span class="logo-box"></span>
-        <h2>
-            Sistem Pakar<br>
-            <span>Diagnosa Penyakit Mulut</span>
-        </h2>
+    <!-- NAVBAR -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fa-solid fa-tooth"></i>
+                    <span>SistemPakar.</span>
+                </div>
+                <div class="nav-links">
+                    <a href="index.html" class="active">Home</a>
+                    <a href="diagnosa.html">Diagnosa</a>
+                    <a href="diagram-tree.html">Diagram Tree</a>
+                    <a href="about.html">About</a>
+                    <a href="implikasi.html">Implikasi</a>
+                </div>
+                <!-- Tombol Menu Mobile (Hanya Hiasan di versi ini) -->
+                <div style="display: none;" class="mobile-menu"><i class="fa-solid fa-bars"></i></div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <main>
+        <section class="hero-section container">
+            <div class="hero-content">
+                <!-- Bagian Teks (Kiri) -->
+                <div class="hero-text fade-in">
+                    <h3>Selamat Datang di</h3>
+                    <h1>Sistem Diagnosa <br><span>Penyakit Mulut</span></h1>
+                    <p>
+                        Penanganan penyakit gigi dan mulut memerlukan pengetahuan dan teknik yang tepat. 
+                        Website ini menerapkan metode <em>Forward Chaining</em> untuk membantu memprediksi 
+                        penyakit berdasarkan gejala yang dialami.
+                    </p>
+                    <a href="diagnosa.html" class="btn">
+                        Mulai Diagnosa <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Bagian Gambar (Kanan) -->
+                <div class="hero-image fade-in">
+                    <img src="assets/pngwing.com (2).png" 
+                         alt="Ilustrasi Dokter Gigi dan Pasien">
+                </div>
+            </div>
+        </section>
+
+        <!-- INFO / FEATURES SECTION -->
+        <section class="features">
+            <div class="container">
+                <div style="text-align: center;" class="fade-in">
+                    <h2>Keunggulan Sistem</h2>
+                    <div style="width: 50px; height: 4px; background: var(--primary-color); margin: 10px auto;"></div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+                        <h3>Metode Forward Chaining</h3>
+                        <p>Menggunakan alur pelacakan maju dari fakta (gejala) menuju kesimpulan (diagnosa) yang akurat.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fa-solid fa-user-doctor"></i></div>
+                        <h3>Basis Pengetahuan</h3>
+                        <p>Sistem dibangun berdasarkan data medis terpercaya untuk memastikan hasil prediksi yang valid.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon"><i class="fa-solid fa-laptop-medical"></i></div>
+                        <h3>Akses Mudah</h3>
+                        <p>Lakukan pemeriksaan awal kesehatan gigi dan mulut Anda kapan saja dan di mana saja melalui web.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- COOKIE BANNER (Fixed Bottom) -->
+    <div class="cookie-banner" id="cookieBanner">
+        <span>🍪 Dengan menggunakan website ini, Anda menyetujui penggunaan cookie untuk pengalaman yang lebih baik.</span>
+        <button class="cookie-btn" onclick="document.getElementById('cookieBanner').style.display='none'">Saya Setuju</button>
     </div>
 
-    <nav>
-        <a href="index.html" class="active">Home</a>
-        <a href="diagnosa.html">Diagnosa</a>
-        <a href="diagram-tree.html">Diagram Tree</a>
-        <a href="about.html">About</a>
-        <a href="#">Implikasi</a>
-    </nav>
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <h3 style="margin-bottom: 20px; color: white;">Sistem Pakar Gigi & Mulut</h3>
+            <div class="social-icons">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" title="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            <p style="margin-top: 30px; font-size: 0.9rem; opacity: 0.7;">
+                &copy; <span id="year"></span> Kelompok Creative. Dibuat untuk Tugas Akhir.
+            </p>
+        </div>
+    </footer>
 
-    <div class="social">
-        <a href="#">FB</a>
-        <a href="#">X</a>
-        <a href="#">IG</a>
-    </div>
-</header>
+    <!-- JAVASCRIPT -->
+    <script>
+        // Tahun Otomatis
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-<!-- ===== Hero Section ===== -->
-<section class="hero">
-    <div class="neon-lines">
-        <span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span>
-    </div>
-</section>
+        // Animasi Scroll Fade-In
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
 
-<!-- ===== Content Section ===== -->
-<section class="content">
-    <div class="content-image">
-        <img src="https://tse4.mm.bing.net/th/id/OIP.erFu6pIVMiQQbLKpRTJnIQHaHx?rs=1&pid=ImgDetMain"
-             alt="Ilustrasi Penyakit Mulut">
-    </div>
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-    <div class="content-text">
-        <h1>
-            Sistem Diagnosa Penyakit Mulut<br>
-            Menggunakan Metode Forward Chaining
-        </h1>
+        // === FITUR HIGHLIGHT MENU NAVBAR ===
+        // Ambil semua link di navbar
+        const navLinks = document.querySelectorAll('.nav-links a');
 
-       
-        <p>
-            Penanganan penyakit gigi dan mulut memerlukan pengetahuan, teknik,
-            serta tenaga ahli agar penyakit dapat ditangani dengan baik.
-           
-            Website ini bertujuan untuk menerapkan metode Forward Chaining
-            dalam pengembangan sistem prediksi penyakit gigi dan mulut.
-        </p>
-
-       
-    </div>
-</section>
-
-<!-- ===== Cookie Banner ===== -->
-<div class="cookie">
-    Dengan menggunakan website ini, Anda menyetujui penggunaan cookie.
-    <a href="#">Kebijakan Privasi</a>
-</div>
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Hapus class 'active' dari semua link
+                navLinks.forEach(l => l.classList.remove('active'));
+                
+                // Tambah class 'active' ke link yang diklik
+                this.classList.add('active');
+            });
+        });
+    </script>
 
 </body>
 </html>
